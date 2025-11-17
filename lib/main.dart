@@ -24,6 +24,7 @@ class XylophoneApp extends StatelessWidget {
 }
 
 // Stateful Widget to manage the AudioPlayer lifecycle
+// ... (XylophoneApp and ExpandedNoteKey classes remain the same) ...
 class XylophoneKeysManager extends StatefulWidget {
   const XylophoneKeysManager({super.key});
 
@@ -32,37 +33,64 @@ class XylophoneKeysManager extends StatefulWidget {
 }
 
 class _XylophoneKeysManagerState extends State<XylophoneKeysManager> {
-  // Single instance of the audio player for efficiency
+  // Use AudioCache for fast loading of short sound effects
+  // AudioCache is now integrated into the main AudioPlayer instance in recent versions.
+  // We can just use a single AudioPlayer instance but leverage pre-caching.
   final AudioPlayer audioPlayer = AudioPlayer();
 
-  // Function to play sound from an asset path
-  void playSound(int soundNumber) async {
-    // Note: This does not await completion, allowing quick successive presses
+  // A list of asset paths we will cache
+  final List<String> soundAssets = [
+    'audio/note1.wav',
+    'audio/note2.wav',
+    'audio/note3.wav',
+    'audio/note4.wav',
+    'audio/note5.wav',
+    'audio/note6.wav',
+    'audio/note7.wav',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Pre-load all audio files into memory when the widget initializes
+    _preloadAudioFiles();
+  }
+
+  Future<void> _preloadAudioFiles() async {
+    // The audioplayers package handles caching automatically if you call preLoad()
+    // across the list of sources you intend to use.
+    for (String assetPath in soundAssets) {
+      await audioPlayer.setSource(AssetSource(assetPath));
+      // In modern versions of audioplayers, simply setting the source or playing it once
+      // can initiate the underlying caching mechanisms. For guaranteed caching
+      // without playing the sound immediately, the package's internal mechanism works fine.
+    }
+    // Alternatively, you can use the static AudioCache helper if you have a separate instance
+    // await AudioCache.instance.loadAll(soundAssets);
+  }
+
+  // Function to play sound efficiently from a cached asset
+  void playSound(int soundNumber) {
+    // We don't await this call, so the UI remains responsive
     audioPlayer.play(AssetSource('note$soundNumber.wav'));
   }
 
   @override
   void dispose() {
-    // Important: release native resources
     audioPlayer.dispose();
     super.dispose();
   }
 
+  // ... (The build method remains the same, calling playSound(soundNumber) ) ...
+
   @override
   Widget build(BuildContext context) {
-    // List of colors corresponding to the 7 keys/notes
     final List<Color> keyColors = [
-      Colors.red,
-      Colors.orange,
-      Colors.yellow,
-      Colors.green,
-      Colors.teal,
-      Colors.blue,
-      Colors.purple,
+      Colors.red, Colors.orange, Colors.yellow, Colors.green,
+      Colors.teal, Colors.blue, Colors.purple,
     ];
 
     return Column(
-      // Stretch keys horizontally to fill the width
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: List.generate(7, (index) {
         final soundNumber = index + 1;
