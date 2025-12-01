@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/appIcon.png" alt="NiHao Logo" width="200"/>
+  <img src="ios/Runner/Assets.xcassets/AppIcon.appiconset/_/1024.png" alt="NiHao Logo" width="200"/>
 </p>
 
 ---
@@ -14,7 +14,7 @@
 ## 📸 Screenshots
 
 <p float="left" align="center">
-  <img src="https://github.com/Vinay1291/images/blob/main/Screenshot_Screenshot_Xylophone.png" width="200"/>
+  <img src="https://github.com/Vinay1291/images/blob/main/Screenshot_Xylophone.png" width="200"/>
 </p>
 
 ---
