@@ -14,7 +14,7 @@
 ## 📸 Screenshots
 
 <p float="left" align="center">
-  <img src="https://github.com/Vinay1291/images/blob/main/Screenshot_Xylophone.png" width="200"/>
+  <img src="https://github.com/Vinay1291/images/blob/main/Screenshot_Xylophone.jpg" width="200"/>
 </p>
 
 ---
